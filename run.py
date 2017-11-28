@@ -1,4 +1,11 @@
 from pca import *
+import sys
+
+# Python version check is necessary as dictionary expression
+# used in this code work differently in python version below 3.6
+if sys.version_info < (3, 6):
+    raise "must use python 3.6"
+
 
 iris_pca = Pca()
 iris_pca.load_arff('iris.arff')
