@@ -47,7 +47,7 @@ class Pca:
         # Principal Component Analysis
         self.pcaa = np.dot(X.transpose(), eigen_vectors).transpose()
 
-    def print2d(self, plot_ratio=1):
+    def print2d_pca(self, plot_ratio=1):
         # Assuming that there are only 3 classes (like in iris and waveform5000)
 
         # PCAs importance list
@@ -70,7 +70,7 @@ class Pca:
             # plt.legend(by_label.values(), by_label.keys())
         plt.show()
 
-    def print3d(self, plot_ratio=1):
+    def print3d_pca(self, plot_ratio=1):
         # Assuming that there are only 3 classes (like in iris and waveform5000)
         fig = plt.figure()
         ax = Axes3D(fig)
@@ -103,24 +103,60 @@ class Pca:
 
         plt.show()
 
+    def print2d_rand(self, plot_ratio=1):
+        # Assuming that there are only 3 classes (like in iris and waveform5000)
 
-iris_pca = Pca()
-iris_pca.load_arff('iris.arff')
-iris_pca.pca()
-print(
-    "Zbiór iris - składowe główne wyjaśniające 90% zmiennych oryginalnych [stosunek wyjaśniania: numer składowej głównej]:")
-print(iris_pca._90p_eigen_values)
-iris_pca.print2d()
-iris_pca.print3d()
+        for i in range(int(len(self.y) * plot_ratio)):
+            if self.y[i] == self.classes[0]:
+                plt.scatter(self.x[i][0], self.x[i][1], s=4,
+                            c='r')  # , label='Klasa 1')
+            elif self.y[i] == self.classes[1]:
+                plt.scatter(self.x[i][0], self.x[i][1], s=4,
+                            c='g')  # , label='Klasa 2')
+            else:
+                plt.scatter(self.x[i][0], self.x[i][1], s=4,
+                            c='b')  # , label='Klasa 3')
+            plt.title("Wizulizacja danych w rzucie na 2 losowe zmienne")
+            plt.xlabel('x1')
+            plt.ylabel('x2')
 
-wave_pca = Pca()
-wave_pca.load_arff('waveform5000.arff')
-wave_pca.pca()
-print(
-    "Zbiór waveform5000 - składowe główne wyjaśniające 90% zmiennych oryginalnych [stosunek wyjaśniania: numer składowej głównej]:")
-pprint.pprint(wave_pca._90p_eigen_values)
+            # # Handling multiple class labels
+            # handles, labels = plt.gca().get_legend_handles_labels()
+            # by_label = OrderedDict(zip(labels, handles))
+            # plt.legend(by_label.values(), by_label.keys())
+        plt.show()
 
-# To increase plot generation speed, only 10% of data is plotted
-# If no argument is given all data will be plotted.
-wave_pca.print2d(0.1)
-wave_pca.print3d(0.1)
+    def print3d_rand(self, plot_ratio=1):
+        # Assuming that there are only 3 classes (like in iris and waveform5000)
+        fig = plt.figure()
+        ax = Axes3D(fig)
+
+        # PCAs importance list
+        importance = list(self.sorted_eigen_values.values())
+        for i in range(int(len(self.y) * plot_ratio)):
+            if self.y[i] == self.classes[0]:
+                ax.scatter(self.x[i][0], self.x[i][1], self.x[i][2], s=4,
+                           c='r')  # , label='Klasa 1')
+            elif self.y[i] == self.classes[1]:
+                ax.scatter(self.x[i][0], self.x[i][1], self.x[i][2], s=4,
+                           c='g')  # , label='Klasa 2')
+            else:
+                ax.scatter(self.x[i][0], self.x[i][1], self.x[i][2], s=4,
+                           c='b')  # , label='Klasa 3')
+
+            plt.title("Wizulizacja danych w rzucie na 3 losowe zmienne")
+            ax.set_xlabel('x1')
+            ax.set_ylabel('x2')
+            ax.set_zlabel('x3')
+
+            ax.zaxis.set_rotate_label(True)
+            ax.yaxis.set_rotate_label(True)
+
+            # # Handling multiple class labels
+            # handles, labels = plt.gca().get_legend_handles_labels()
+            # by_label = OrderedDict(zip(labels, handles))
+            # plt.legend(by_label.values(), by_label.keys())
+
+        plt.show()
+
+
